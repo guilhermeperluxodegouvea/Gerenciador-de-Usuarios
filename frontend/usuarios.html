@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lista de Usuários</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Lista de Usuários</h1>
+            <ul id="listaUsuarios"></ul>
+            <a href="index.html">Voltar</a>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script async>
+            // Listagem de Usuários
+            document.addEventListener("DOMContentLoaded", async () => {
+                const token = localStorage.getItem("token");
+
+                if (!token) {
+                    window.location.href = "login.html"; // Redireciona para o login se não houver token
+                    return;
+                }
+
+                try {
+                    const response = await axios.get(
+                        "http://localhost:3000/listar-usuarios",
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    const listaUsuarios =
+                        document.getElementById("listaUsuarios");
+                    response.data.users.forEach((user) => {
+                        const li = document.createElement("li");
+                        li.textContent = user.nome + " - " + user.email;
+                        listaUsuarios.appendChild(li);
+                    });
+                } catch (error) {
+                    console.error("Erro ao listar usuários:", error);
+                    window.location.href = "login.html"; // Redireciona para o login em caso de erro
+                }
+            });
+        </script>
+    </body>
+</html>

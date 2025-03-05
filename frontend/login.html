@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Login</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <div class="container">
+            <h1>Login</h1>
+            <form id="loginForm">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" required />
+
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" required />
+
+                <button type="submit">Entrar</button>
+            </form>
+            <p id="mensagem"></p>
+            <a href="index.html">Voltar</a>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script async>
+            // Login de Usuário
+            document
+                .getElementById("loginForm")
+                ?.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const email = document.getElementById("email").value;
+                    const senha = document.getElementById("senha").value;
+
+                    try {
+                        const response = await axios.post(
+                            "http://localhost:3000/login",
+                            {
+                                email,
+                                senha,
+                            }
+                        );
+                        localStorage.setItem("token", response.data.token); // Salva o token no localStorage
+                        document.getElementById("mensagem").textContent =
+                            "Login realizado com sucesso!";
+                        window.location.href = "usuarios.html"; // Redireciona para a página de usuários
+                    } catch (error) {
+                        document.getElementById("mensagem").textContent =
+                            "Erro ao fazer login: " +
+                            error.response.data.message;
+                    }
+                });
+        </script>
+    </body>
+</html>
