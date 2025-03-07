@@ -9,6 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+const port = 3000;
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "../frontend")));
@@ -16,4 +17,4 @@ app.use(express.static(path.join(__dirname, "../frontend")));
 app.use("/", publicRoutes);
 app.use("/", auth, privateRoutes);
 
-app.listen(3000, () => console.log("Servidor rodando..."));
+app.listen(port, () => console.log("Servidor rodando..."));
